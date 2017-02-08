@@ -33,6 +33,8 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.LinkedList;
+import java.util.List;
 
 public class IOutilities {
 
@@ -129,18 +131,15 @@ public class IOutilities {
 		return reader;
 	}
 	
-	public static String readFile(Path path) throws IOException {
-	    BufferedReader br = createBufferedReader(path);
+	public static List<String> readFileRows(Path path) throws IOException {
+	    List<String> list = new LinkedList<>();
+		BufferedReader br = createBufferedReader(path);
 	    try {
-	        StringBuilder sb = new StringBuilder();
-	        String line = br.readLine();
-
-	        while (line != null) {
-	            sb.append(line);
-	            sb.append("\n");
-	            line = br.readLine();
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	        	list.add(line);
 	        }
-	        return sb.toString();
+	        return list;
 	    } finally {
 	        br.close();
 	    }
