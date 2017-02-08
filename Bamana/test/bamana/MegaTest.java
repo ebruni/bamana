@@ -50,8 +50,6 @@ public class MegaTest {
 		System.out.println("ACTUAL:\n" + actualUnreadableLog);
 		assertEquals(expectedUnreadableLog, actualUnreadableLog);
 		
-		
-		
 		// To test SnapshotRestorer, first delete the timestampDir folder,
 		// then redo 'File timestampDir = logsPath.toFile().listFiles()[0];'
 		// new SnapshotRestorer(new Logger(homeDir), new String[] { backupIndex, restoreDir, snapshotIndex, homeDir }).restore();
