@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# COMPILER
+
+if [ "$(id -u)" != "0" ]; then
+	echo ""	
+	echo "Bamana's installer has to be run with root privileges."
+	exit
+fi
+echo	""
+echo    "Bamana   Copyright (C) 2017 Emanuele Bruni"
+echo    "This program comes with ABSOLUTELY NO WARRANTY."
+echo    "This is free software, and you are welcome to redistribute it"
+echo    "under certain conditions."
+echo    ""
+mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
+current_dir=$(pwd)
+echo 'Compiling...'
+javac -Xlint -d $mytmpdir -sourcepath "$current_dir/Bamana/src" "$current_dir/Bamana/src/bamana/Bamana.java"
+echo ""
+echo 'Main-Class: bamana.Bamana' > $mytmpdir/Manifest.txt
+cd "$mytmpdir"
+jar cfm ./Bamana.jar Manifest.txt bamana/*.class metadataRecords/*.class
+if [ ! -f Bamana.jar ]; then
+    echo "Compiling failed!"
+		exit
+fi
+echo "Compiled."
+echo ""
+
+# INSTALLER
+
+function show_w {
+	echo ""
+	echo "15. Disclaimer of Warranty."
+	echo ""
+	echo "THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION."
+	echo ""
+}
+
+function quit {
+	echo "Bye."
+	exit
+}
+
+default_dir=/opt/bamana
+default_parent_dir=/opt
+echo "Select the installation directory (Press ENTER for" $default_parent_dir")"
+echo "Bamana will be installed into a subdirectory named 'bamana'."
+while true; do
+	read -p "> " -e input
+	echo ""
+	case $input in
+	    "" ) directory=$default_parent_dir;;
+	    "exit" ) quit;;
+		* ) directory=$input;;
+	esac
+	if [[ $directory != /* ]]; then
+		echo "Wrong path format."
+		continue;
+	else
+		echo "Installing in" "$directory"
+		break;
+	fi
+done
+mkdir -p "$directory/bamana"
+cp ./Bamana.jar "$directory/bamana"
+cd "$current_dir"
+cp ./{bamana,LICENSE,SETUP} "$directory/bamana"
+cp -R ./SETUP "$directory/bamana"
+cd Bamana
+cp -R ./src "$directory/bamana"
+cd ..
+chmod -R 777 "$directory/bamana"
+ln -f -s "$directory/bamana/bamana" /usr/local/bin/bamana
+home="$HOME"
+config_dir="$home/.bamana"
+mkdir -p "$config_dir"
+version="0.0.1"
+version_and_path="$version\n$directory"
+echo -e "$version_and_path" > "$config_dir/installation_path.txt"
+touch "$config_dir/backups.txt"
+sudo chmod -R 777 "$config_dir"
+sudo chown -R $(logname):$(logname) "$config_dir"
+echo ""
+echo "Bamana has been installed."
+# echo "See 'man bmn' for the user manual and further informations."

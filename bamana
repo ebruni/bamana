@@ -1,0 +1,316 @@
+#!/bin/bash
+
+function help_func {
+		echo "Usage: bmn init CAULDRON_PATH"
+		echo "       bmn snap SOURCE"
+		echo "       bmn restore SOURCE DESTINATION SNAPSHOT_NAME"
+}
+
+home=$HOME
+inst_temp=$(readlink -f $(which bmn))
+inst_temp="$(dirname "$inst_temp")"
+installation_dir="$(dirname "$inst_temp")"
+jar_location=$installation_dir/bamana/Bamana.jar
+case $1 in
+	"init")
+		OPTIND=2
+		i=false
+		A=false
+		b=false
+		while getopts "iA:b:" opt; do
+		  case $opt in
+			b)
+			  if [ $b = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  b_name=$OPTARG
+			  b=true
+			  ;;
+			A)
+			  if [ $A = true ]; then
+			    echo "Invalid operation"
+			    exit
+			  fi
+			  A_path=$OPTARG
+			  A=true
+			  ;;
+			i)
+			  if [ $i = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  i=true
+			  ;;
+			\?)
+			  exit
+			  ;;
+		  esac
+		done
+		if [ $i = true ] && [ $A = false ] && [ $b = false ]; then
+			echo "Path where to keep the backup's archive (must be absolute):"
+			while true; do
+				read -p "> " -e input
+				case $input in
+				#		"exit" ) quit;;
+					* ) A_path=$input;;
+				esac
+
+				if [[ $A_path != /* ]]; then
+					echo "Wrong path format."
+					continue;
+				fi
+				if [ -d "$A_path" ]; then
+					break;
+				else
+					echo "Directory" $A_path "does not exist."
+				fi
+			done
+			echo "Backup name (optional)"
+			read -p "> " -e b_name
+		elif [ $i = false ] && [ $A = true ]; then
+		  echo $A_path
+		  if [ $b = true ]; then
+			echo $b_name
+		  fi
+		else
+		  echo "Invalid operation."
+		  exit
+		fi
+		cauldron=$2
+		source=$(pwd)
+		java -jar "$jar_location" "init" "$A_path" "$source" "$b_name" "$home"
+	;;
+    "snap")
+		OPTIND=2
+		i=false
+		s=false
+		e=false
+		e_entries=0
+		while getopts "is:e:" opt; do
+		  case $opt in
+			s)
+			  if [ $s = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  s_name=$OPTARG
+			  s=true
+			  ;;
+			i)
+			  if [ $i = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  i=true
+			  ;;
+			e)
+			  e_paths=$e_paths' ''"'$OPTARG'"'
+			  e=true
+			  ;;
+			\?)
+			  exit
+			  ;;
+		  esac
+		done
+		if [ $i = true ] && [ $s = false ]; then
+			echo "Snapshot name (optional)"
+			read -p "> " -e s_name
+		elif [ $i = false ] && ( [ $s = true ] || [ $e = true ] ); then
+		  if [ $s = true ]; then
+				echo $s_name
+		  fi
+		else
+		  echo "Invalid operation."
+		  exit
+		fi
+		source=$(pwd)
+		java -jar -Dfile.encoding=UTF-8 "$jar_location" "snap" "$source" "$s_name" "$home" "$filesystem" $e_paths
+	;;
+    "restore")
+		OPTIND=2
+		i=false
+		b=false
+		s=false
+		D=false
+		while getopts "ib:s:D:" opt; do
+		  case $opt in
+			s)
+			  if [ $s = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  s_name=$OPTARG
+			  s=true
+			  ;;
+			i)
+			  if [ $i = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  i=true
+			  ;;
+			b)
+			  if [ $b = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  b_name=$OPTARG
+			  b=true
+			  ;;
+			D)
+			  if [ $D = true ]; then
+			    echo "Invalid operation"
+			    exit
+			  fi
+			  D_path=$OPTARG
+			  D=true
+			  ;;
+			\?)
+			  #echo "Invalid option: -$OPTARG" >&2
+			  exit
+			  ;;
+		  esac
+		done
+		if [ $i = true ] && [ $b = false ] && [ $s = false ] && [ $D = false ]; then
+			bmn listb
+			echo "Choose a backup to restore a snapshot from by writing its index:"
+			read -p "> " -e b_identificativo
+			bmn lists -b $b_identificativo
+			echo "Choose the snapshot to restore by writing its index:"
+			read -p "> " -e s_identificativo
+			echo $s_identificativo
+
+			#echo "Path where to restore the selected snapshot (must be absolute):"
+			#while true; do
+			#	read -p "> " -e input
+			#	case $input in
+				#		"exit" ) quit;;
+			#		* ) D_path=$input;;
+			#	esac
+			#	if [[ $D_path != /* ]]; then
+			#		echo "Wrong path format."
+			#		continue;
+			#	fi
+			#	if [ -d "$D_path" ]; then
+			#		break;
+			#	else
+			#		echo "Directory" $D_path "does not exist."
+			#	fi
+			#done
+		elif [ $i = false ] && [ $b = true ] && [ $s = true ] && [ $D = true ]; then
+		  echo "OK"
+		else
+		  echo "Invalid operation."
+		  exit
+		fi
+		#source=$(pwd)
+		dest=$(pwd)
+		filesystem=$(df -T -P $D_path)
+		#java -jar "$jar_location" "restore" "$b_identificativo" "$D_path" "$s_identificativo" "$home" "$filesystem"
+		java -jar "$jar_location" "restore" "$b_identificativo" "$dest" "$s_identificativo" "$home" "$filesystem"
+	;;
+	"cap")
+		OPTIND=2
+		i=false
+		b=false
+		A=false
+		while getopts "ib:A:" opt; do
+		  case $opt in
+			i)
+			  if [ $i = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  i=true
+			  ;;
+			b)
+			  if [ $b = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  b_name=$OPTARG
+			  b=true
+			  ;;
+			A)
+			  if [ $A = true ]; then
+			    echo "Invalid operation"
+			    exit
+			  fi
+			  A_path=$OPTARG
+			  A=true
+			  ;;
+			\?)
+			  exit
+			  ;;
+		  esac
+		done
+		if [ $i = true ] && [ $b = false ] && [ $A = false ]; then
+			bmn listb
+			echo "Choose a backup to change its archive path:"
+			read -p "> " -e b_identificativo
+			echo $b_identificativo
+			echo "New path of the archive:"
+			while true; do
+				read -p "> " -e input
+				case $input in
+				#		"exit" ) quit;;
+					* ) A_path=$input;;
+				esac
+				if [[ $A_path != /* ]]; then
+					echo "Wrong path format."
+					continue;
+				fi
+				if [ -d "$A_path" ]; then
+					break;
+				else
+					echo "Directory" $A_path "does not exist."
+				fi
+			done
+		elif [ $i = false ] && [ $b = true ] && [ $A = true ]; then
+		  echo "OK"
+		else
+		  echo "Invalid operation."
+		  exit
+		fi
+		source=$(pwd)
+		java -jar "$jar_location" "cap" "$b_identificativo" "$A_path" "$home"
+	;;
+	"lists")		
+		OPTIND=2
+		b=false
+		while getopts "b:" opt; do
+		  case $opt in
+			b)
+			  if [ $b = true ]; then
+				echo "Invalid operation"
+				exit
+			  fi
+			  b_identificativo=$OPTARG
+			  b=true
+			  ;;
+			esac
+		done
+		if [ $b = false ]; then
+	  	echo "Invalid operation."
+		  exit
+		fi
+		java -jar "$jar_location" "lists" "$b_identificativo" "$home"
+	;;
+	"listb")
+		java -jar "$jar_location" "listb" "$home"
+	;;
+	"--help")
+		help_func
+	;;
+	"")
+		help_func
+	;;
+	*)
+		echo "BaMana:" $1 "is not a valid command. See 'bmn --help'."
+		exit
+	;;
+esac
+
+OPTIND=2
+
