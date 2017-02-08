@@ -51,12 +51,12 @@ public class MegaTest {
 		List<String> actualUnreadableLog = IOutilities.readFileRows(logPath);
 
 		Iterator<String>  it = expectedUnreadableLog.iterator();
-		System.out.println("EXPECTED:");
+		System.out.println("EXPECTED (list):");
 		while (it.hasNext())
 			System.out.println(it.next());
 		
 		it = actualUnreadableLog.iterator();
-		System.out.println("ACTUAL:");
+		System.out.println("ACTUAL (list):");
 		while (it.hasNext())
 			System.out.println(it.next());
 		
