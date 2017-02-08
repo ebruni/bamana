@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -49,6 +50,16 @@ public class MegaTest {
 		List<String> expectedUnreadableLog = IOutilities.readFileRows(Paths.get(expectedLogsDir + "/unreadable.log"));
 		List<String> actualUnreadableLog = IOutilities.readFileRows(logPath);
 
+		Iterator<String>  it = expectedUnreadableLog.iterator();
+		System.out.println("EXPECTED:");
+		while (it.hasNext())
+			System.out.println(it.next());
+		
+		it = actualUnreadableLog.iterator();
+		System.out.println("ACTUAL:");
+		while (it.hasNext())
+			System.out.println(it.next());
+		
 		assertTrue(expectedUnreadableLog.containsAll(actualUnreadableLog)
 				&& actualUnreadableLog.containsAll(expectedUnreadableLog));
 
