@@ -1,6 +1,6 @@
 #Bamana
 
-[![Build Status](https://travis-ci.org/ebruni/bamana.svg?branch=merge)](https://travis-ci.org/ebruni/bamana)
+[![Build Status](https://travis-ci.org/ebruni/bamana.svg?branch=master)](https://travis-ci.org/ebruni/bamana)
 
 **Bamana is a free** (GNU GPLv3) **command line file based incremental backup software** for GNU/Linux written in Java, optimized for SSDs and multicore processors, sooner or later to be ported to Windows and MacOS.
 
