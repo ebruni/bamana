@@ -67,7 +67,7 @@ Check the Issues section for the currently known/reported issues.
 
 ###FAQ
 
-Q: Are you using Bamana for your backups?
+Q: Are you using Bamana for your backups?  
 A: Absolutely yes.
 
 Q: Are newer versions backward compatible with backups created with older versions?  
