@@ -7,7 +7,7 @@ function help_func {
 }
 
 home=$HOME
-inst_temp=$(readlink -f $(which bmn))
+inst_temp=$(readlink -f $(which bamana))
 inst_temp="$(dirname "$inst_temp")"
 installation_dir="$(dirname "$inst_temp")"
 jar_location=$installation_dir/bamana/Bamana.jar
