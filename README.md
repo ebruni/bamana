@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ebruni/bamana.svg?branch=master)](https://travis-ci.org/ebruni/bamana)
 
-**Bamana is a free** (GNU GPLv3) **command line file based incremental backup software** for GNU/Linux written in Java, optimized for SSDs and multicore processors, sooner or later to be ported to Windows and MacOS.
+**Bamana is a free** (GNU AGPLv3) **command line file based incremental backup software** for GNU/Linux written in Java, optimized for SSDs and multicore processors, sooner or later to be ported to Windows and MacOS.
 
 The first snapshot of a newly initialized backup recursively saves the source directory into the backup's archive, while subsequent snapshots only save those files which have been added or modified since the previous snapshot. Deleted files and previous versions of modified files (including their metadata) are kept saved so that they can be restored when restoring a corresponding snapshot. Restoring a snapshot doesn't require to restore previous snapshots. Moving/renaming a file doesn't require to create a new copy of it.
 
