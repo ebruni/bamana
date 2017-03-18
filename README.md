@@ -1,4 +1,4 @@
-#Bamana
+# Bamana
 
 [![Build Status](https://travis-ci.org/ebruni/bamana.svg?branch=master)](https://travis-ci.org/ebruni/bamana)
 
@@ -6,16 +6,16 @@
 
 The first snapshot of a newly initialized backup recursively saves the source directory into the backup's archive, while subsequent snapshots only save those files which have been added or modified since the previous snapshot. Deleted files and previous versions of modified files (including their metadata) are kept saved so that they can be restored when restoring a corresponding snapshot. Restoring a snapshot doesn't require to restore previous snapshots. Moving/renaming a file doesn't require to create a new copy of it.
 
-###Features
+### Features
 
-#####Current
+##### Current
 - Attributes preservation: group, owner, permissions, symbolic link target, creation time, last access time, last modified time
 - Integrity checks
 - Exclusion of selected subdirectories
 - Duplicate files are stored only once
 - Optimized for SSDs and multicore CPUs.
 
-#####To be introduced ASAP
+##### To be introduced ASAP
 - Support for Windows filesystems
 - Creation of backups with more than one root directory
 - Data and metadata compression and encryption (metadata currently weights far more than it should)
@@ -29,7 +29,7 @@ The first snapshot of a newly initialized backup recursively saves the source di
 - Much more.
 Suggestions are warmly welcome.
 
-###Installation guide
+### Installation guide
 Binaries are not available yet, anyway compiling from source is extremely easy. Just be sure to have git and either OpenJDK 7+ or Oracle JDK 7+ in your system before running the installer.
 
 ```
@@ -39,7 +39,7 @@ sudo ./SETUP
 ```
 and follow the instructions.
 
-###Usage
+### Usage
 Step 1. Initialize a backup for the directory you want to backup. `cd` to the directory and type:  
 `bmn init -i`
 
@@ -53,19 +53,19 @@ Using sudo is advised to avoid missing permissions related issues.
 
 **Need help** (or just wanna have a chat)**?** Join Bamana's telegram group: https://t.me/joinchat/AAAAAD6fZmMrP9lcxZsS5g
 
-###Current version
+### Current version
 0.0.1
 
-###Changelog
+### Changelog
 *No significant changes yet.*
 
-###Development status
+### Development status
 I've done many snapshots and restores of directories containing tens of thousands of elements and everything seems to work as it should. Minor bugs and unhandled events can still pop out but nothing critical as far as I know.
 I can't guarantee about the strenght of the hashing function at the moment (currently MD5, will likely switch to SHA-1 or higher in the near future), and there are no collision detection mechanisms yet.
 Code and user interface are sometimes inelegant and logs are often vague and messy. I'm planning to do a gradual refactoring and to produce a decent documentation both for users and developers in the next months.  
 Check the Issues section for the currently known/reported issues.
 
-###FAQ
+### FAQ
 
 Q: Are you using Bamana for your backups?  
 A: Absolutely yes.
