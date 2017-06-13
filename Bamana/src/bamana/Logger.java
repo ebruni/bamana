@@ -39,17 +39,7 @@ public class Logger {
 			metadataRestoreErrorLogPathFlag = new Object(); // #162
 
 	// #196
-	final String UNREADABLE_ELEMENTS_LOG_MESSAGE = "Errors occurred while trying to read some elements, "
-			+ "perhaps due to missing permissions or broken symlinks. See " + unreadableLogPath
-			+ " for a complete list of the unreadable elements.";
-	final String DATA_ERROR_LOG_MESSAGE = "Check failed for some elements. See " + dataErrorsLogPath
-					+ " for a complete list of the elements that failed the check.";
-	final String METADATA_ERROR_LOG_MESSAGE = "Check failed for some elements. " + "See " + metadataErrorsLogPath
-			+ " for a complete list of the elements that failed the check.";
-	final String IMMEDIATE_CHECK_ERROR_LOG_MESSAGE = "Check failed for some elements. " + "See " + immediateCheckErrorsLogPath
-						+ " for a complete list of the elements that failed the check.";
-	final String COPY_ERROR_LOG_MESSAGE = "Errors occurred while copying some files to the backup's archive. " + "See "
-			+ copyErrorsLogPath + " for a complete list of the uncopied files.";
+	String UNREADABLE_ELEMENTS_LOG_MESSAGE, DATA_ERROR_LOG_MESSAGE, METADATA_ERROR_LOG_MESSAGE, IMMEDIATE_CHECK_ERROR_LOG_MESSAGE, COPY_ERROR_LOG_MESSAGE;
 	
 	boolean gotCheckMemToDiskErrors, gotArchiveCheckErrors, gotIoExceptions, gotMetadataRestoreErrors, gotCheckErrors;
 	AtomicBoolean gotImmediateCheckErrors, gotUnreadableElements;
@@ -76,6 +66,18 @@ public class Logger {
 				.get(home + "/.bamana/logs/" + timestamp + "/errors/restore_check/restore_check.log");
 		metadataRestoreErrorsLogPath = Paths
 				.get(home + "/.bamana/logs/" + timestamp + "/errors/metadata_restore/metadata_restore.log");
+		
+		UNREADABLE_ELEMENTS_LOG_MESSAGE = "Errors occurred while trying to read some elements, "
+				+ "perhaps due to missing permissions or broken symlinks. See " + unreadableLogPath
+				+ " for a complete list of the unreadable elements.";
+		DATA_ERROR_LOG_MESSAGE = "Check failed for some elements. See " + dataErrorsLogPath
+				+ " for a complete list of the elements that failed the check.";
+		METADATA_ERROR_LOG_MESSAGE = "Check failed for some elements. " + "See " + metadataErrorsLogPath
+				+ " for a complete list of the elements that failed the check.";
+		IMMEDIATE_CHECK_ERROR_LOG_MESSAGE = "Check failed for some elements. " + "See " + immediateCheckErrorsLogPath
+				+ " for a complete list of the elements that failed the check.";
+		COPY_ERROR_LOG_MESSAGE = "Errors occurred while copying some files to the backup's archive. " + "See "
+				+ copyErrorsLogPath + " for a complete list of the uncopied files.";
 	}
 	
 	public Path logFatalException(Exception ex, String home) throws IOException {

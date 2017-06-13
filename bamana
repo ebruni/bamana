@@ -1,9 +1,10 @@
 #!/bin/bash
 
 function help_func {
-		echo "Usage: bmn init CAULDRON_PATH"
-		echo "       bmn snap SOURCE"
-		echo "       bmn restore SOURCE DESTINATION SNAPSHOT_NAME"
+#		echo "Usage: bmn init CAULDRON_PATH"
+#		echo "       bmn snap SOURCE"
+#		echo "       bmn restore SOURCE DESTINATION SNAPSHOT_NAME"
+		echo "Not implemented yet."
 }
 
 home=$HOME
@@ -173,10 +174,10 @@ case $1 in
 		  esac
 		done
 		if [ $i = true ] && [ $b = false ] && [ $s = false ] && [ $D = false ]; then
-			bmn listb
+			bamana listb
 			echo "Choose a backup to restore a snapshot from by writing its index:"
 			read -p "> " -e b_identificativo
-			bmn lists -b $b_identificativo
+			bamana lists -b $b_identificativo
 			echo "Choose the snapshot to restore by writing its index:"
 			read -p "> " -e s_identificativo
 			echo $s_identificativo
@@ -246,7 +247,7 @@ case $1 in
 		  esac
 		done
 		if [ $i = true ] && [ $b = false ] && [ $A = false ]; then
-			bmn listb
+			bamana listb
 			echo "Choose a backup to change its archive path:"
 			read -p "> " -e b_identificativo
 			echo $b_identificativo
@@ -307,7 +308,7 @@ case $1 in
 		help_func
 	;;
 	*)
-		echo "BaMana:" $1 "is not a valid command. See 'bmn --help'."
+		echo "BaMana:" $1 "is not a valid command. See 'bamana --help'."
 		exit
 	;;
 esac

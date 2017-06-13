@@ -44,7 +44,6 @@ public class Bamana {
 		} else if (args[0].equals("snap")) {
 			home = args[3];
 			logger = new Logger(home);
-
 			logger.setLogPaths(home);
 			try {
 				new Snapper(logger, Arrays.copyOfRange(args, 1, args.length)).snap();
@@ -54,7 +53,6 @@ public class Bamana {
 		} else if (args[0].equals("restore")) {
 			home = args[4];
 			logger = new Logger(home);
-
 			logger.setLogPaths(home);
 			try {
 				new SnapshotRestorer(logger, Arrays.copyOfRange(args, 1, args.length)).restore();
@@ -65,7 +63,6 @@ public class Bamana {
 		} else if (args[0].equals("listb")) {
 			home = args[1];
 			logger = new Logger(home);
-
 			logger.setLogPaths(home);
 			try {
 				new BackupLister(Arrays.copyOfRange(args, 1, args.length)).list();
@@ -74,6 +71,7 @@ public class Bamana {
 			}
 		} else if (args[0].equals("lists")) {
 			home = args[2];
+			logger = new Logger(home);
 			logger.setLogPaths(home);
 			try {
 				new SnapshotLister(Arrays.copyOfRange(args, 1, args.length)).list();
@@ -83,7 +81,6 @@ public class Bamana {
 		} else if (args[0].equals("cap")) {
 			home = args[3];
 			logger = new Logger(home);
-
 			logger.setLogPaths(home);
 			try {
 				new ArchivePathChanger(Arrays.copyOfRange(args, 1, args.length)).cap();
