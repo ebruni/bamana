@@ -16,7 +16,7 @@ echo    ""
 mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 current_dir=$(pwd)
 echo 'Compiling...'
-javac -Xlint -d $mytmpdir -sourcepath "$current_dir/Bamana/src" "$current_dir/Bamana/src/bamana/Bamana.java"
+javac -Xlint -d $mytmpdir -sourcepath "$current_dir/Bamana-files/src" "$current_dir/Bamana-files/src/bamana/Bamana.java"
 echo ""
 echo 'Main-Class: bamana.Bamana' > $mytmpdir/Manifest.txt
 cd "$mytmpdir"
@@ -68,7 +68,7 @@ cp ./Bamana.jar "$directory/bamana"
 cd "$current_dir"
 cp ./{bamana,LICENSE,SETUP} "$directory/bamana"
 cp -R ./SETUP "$directory/bamana"
-cd Bamana
+cd Bamana-files
 cp -R ./src "$directory/bamana"
 cd ..
 chmod -R 777 "$directory/bamana"

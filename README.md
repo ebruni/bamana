@@ -41,13 +41,13 @@ and follow the instructions.
 
 ### Usage
 Step 1. Initialize a backup for the directory you want to backup. `cd` to the directory and type:  
-`bmn init -i`
+`bamana init -i`
 
 Step 2. Take a snapshot of that directory. `cd` to the directory and type:  
-`(sudo) bmn snap -i`  
+`(sudo) bamana snap -i`  
 
 Step 3. Restore a snapshot. `cd` to the directory where you want to restore the snapshot and type:  
-`(sudo) bmn restore -i`
+`(sudo) bamana restore -i`
 
 Using sudo is advised to avoid missing permissions related issues.
 
